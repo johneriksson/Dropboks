@@ -1,0 +1,55 @@
+html, body {
+    height: 100%;
+}
+
+body {
+    background: #FFFFFF;
+}
+
+md-sidenav {
+    fill: #737373;
+}
+
+md-sidenav ng-md-icon {
+    position: relative;
+    top: 5px;
+}
+
+.md-toolbar-tools-bottom {
+    font-size: medium
+}
+
+.md-toolbar-tools-bottom :last-child {
+    opacity: 0.8;
+}
+
+.wideButton {
+    width: 100%;
+}
+
+.textLeftAlign {
+    text-align: left;
+}
+
+.sidenavButtonText {
+    padding-left: 10px;
+}
+
+#credentialsForm {
+    max-width: 400px;
+}
+
+.flexCenter {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.loginIcon {
+    position: relative;
+    top: 6px;
+}
+
+.bottomShadow {
+    box-shadow: 0 2px 5px 2px #6082B3;
+}

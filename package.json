@@ -1,0 +1,29 @@
+{
+  "name": "Dropboks",
+  "version": "0.0.0",
+  "description": "Dropbox clone with the MEAN-stack",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "John Eriksson",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^0.8.5",
+    "body-parser": "latest",
+    "bson": "^0.4.20",
+    "connect-flash": "latest",
+    "connect-mongo": "^1.1.0",
+    "connect-multiparty": "^2.0.0",
+    "cookie-parser": "latest",
+    "ejs": "latest",
+    "express": "latest",
+    "express-session": "latest",
+    "moment": "^2.11.0",
+    "mongoose": "latest",
+    "passport": "latest",
+    "passport-facebook": "^2.0.0",
+    "passport-google-oauth": "^0.2.0",
+    "passport-local": "latest"
+  }
+}

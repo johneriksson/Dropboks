@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html ng-app="myApp">
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <script type="text/javascript">
+            var idx = window.location.toString().indexOf("#");
+            if (idx > 0) {
+                window.location = window.location.toString().substring(0, idx);
+            }
+        </script>
+        <title>Login - Dropboks</title>
+        <link rel="stylesheet" href="/bower_components/angular-material/angular-material.min.css">
+        <link rel="stylesheet" href="/css/custom.css">
+        <style>
+            .topPadding {
+                padding-top: 150px;
+            }
+        </style>
+    </head>
+    <body ng-controller="LoginCtrl" layout="column">
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <span style="font-size: 30px;">Dropboks</span>
+            </div>
+        </md-toolbar>
+        <div layout-align="center center" class="topPadding">
+            <div class="flexCenter">
+                <form action="/auth/login" method="post" id="credentialsForm">
+                    <div layout="row" layout-align="center center" layout-padding>
+                        <md-input-container flex>
+                            <label>Username</label>
+                            <input type="text" name="username" required>
+                        </md-input-container>
+                        <md-input-container flex>
+                            <label>Password</label>
+                            <input type="password" name="password" required>
+                        </md-input-container>
+                    </div>
+                    <div layout="row" layout-align="center center">
+                        <md-button class="md-raised md-primary" type="submit" flex>Log in</md-button>
+                        <% if (message.length > 0) { %>
+                            <div class="errorMessage"><%= message %></div>
+                        <% } %>
+                    </div>
+                    <div layout="row" layout-align="center center">
+                        <md-button class="md-raised md-warn" aria-label="Google login" href="/auth/google" flex>
+                            Log in with  &nbsp;<ng-md-icon icon="google-plus" class="loginIcon"></ng-md-icon>
+                        </md-button>
+                        <md-button class="md-raised md-primary md-hue-2" aria-label="Facebook login" href="/auth/facebook" flex>
+                            Log in with  &nbsp;<ng-md-icon icon="facebook" class="loginIcon"></ng-md-icon>
+                        </md-button>
+                    </div>
+                </form>
+<!--
+                <md-button href="/auth/facebook"><ng-md-icon icon="facebook"></ng-md-icon>Facebook</md-button>
+                <md-button href="/auth/google"><ng-md-icon icon="google-plus"></ng-md-icon>Google+</md-button>
+-->
+            </div>
+        </div>
+        <script src="/bower_components/angular/angular.min.js"></script>
+        <script src="/bower_components/angular-animate/angular-animate.min.js"></script>
+        <script src="/bower_components/angular-aria/angular-aria.min.js"></script>
+        <script src="/bower_components/angular-material/angular-material.min.js"></script>
+        <script src="/bower_components/angular-material-icons/angular-material-icons.min.js"></script> 
+        <script src="/controllers/loginController.js"></script>
+    </body>
+</html>

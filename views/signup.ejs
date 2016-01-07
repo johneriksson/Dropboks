@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html ng-app="myApp">
+    <head>
+        <script type="text/javascript">
+            var idx = window.location.toString().indexOf("#");
+            if (idx > 0) {
+                window.location = window.location.toString().substring(0, idx);
+            }
+        </script>
+        <title>Signup - Dropboks</title>
+        
+        
+        <link rel="stylesheet" href="/bower_components/bootstrap/dist/css/bootstrap.min.css">
+        <link rel="stylesheet" href="/css/custom.css">
+        <script src="/bower_components/angular/angular.min.js"></script>
+        <script src="/controllers/signupController.js"></script>
+        <style>.container{padding-top: 100px;}</style>
+    </head>
+    <body ng-controller="SignupCtrl">
+        <div id="pageHeader">
+            <div id="brand">Dropboks</div>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-0 col-sm-3 col-md-4"></div>
+                <div class="col-xs-12 col-sm-6 col-md-4">
+                    <h1>Sign up</h1>
+                    <br>
+                    <form action="/auth/signup" method="post" id="credentialsForm">
+                        <div class="form-group">
+                            <input type="text" placeholder="Username" class="form-control" name="username">
+                        </div>
+                        <div class="form-group">
+                            <input type="password" placeholder="Password" class="form-control" name="password">
+                        </div>
+                        <input type="submit" class="wideButton" value="Sign up">
+                        <div class="errorMessage">
+                            {{errorMessage}}
+                        </div>
+                    </form>
+                </div>
+                <div class="col-xs-0 col-sm-3 col-md-4"></div>
+            </div>
+        </div>
+    </body>
+</html>
