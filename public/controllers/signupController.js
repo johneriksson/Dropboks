@@ -1,6 +1,24 @@
 
-var myApp = angular.module("myApp", []);
+var myApp = angular.module("myApp", ["ngMaterial", "ngMdIcons"]);
 
-myApp.controller("SignupCtrl", ["$scope", "$http", "$rootScope", function($scope, $http, $rootScope) {
+myApp.controller("SignupCtrl", ["$scope", "$mdSidenav", function($scope, $mdSidenav) {
     
 }]);
+
+myApp.config(function($mdThemingProvider) {
+    var customBlueMap = $mdThemingProvider.extendPalette('light-blue', {
+        'contrastDefaultColor': 'light',
+        'contrastDarkColors': ['50'],
+        '50': 'ffffff'
+    });
+    
+    $mdThemingProvider.definePalette('customBlue', customBlueMap);
+    
+    $mdThemingProvider.theme('default')
+        .primaryPalette('customBlue', {
+        'default': '500',
+        'hue-1': '50'
+    }).accentPalette('pink');
+    
+    $mdThemingProvider.theme('input', 'default').primaryPalette('grey');
+});
