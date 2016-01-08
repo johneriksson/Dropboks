@@ -19,6 +19,7 @@
     "ejs": "latest",
     "express": "latest",
     "express-session": "latest",
+    "kerberos": "0.0.17",
     "moment": "^2.11.0",
     "mongoose": "latest",
     "passport": "latest",
