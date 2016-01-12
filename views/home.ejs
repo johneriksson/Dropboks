@@ -10,117 +10,62 @@
         </script>
         <title>Home - Dropboks</title>
         
-        <link rel="stylesheet" href="/bower_components/angular-material/angular-material.min.css">
+        <link rel="stylesheet" href="/bower_components/Materialize/dist/css/materialize.min.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
         <link rel="stylesheet" href="/css/custom.css">
     </head>
-    <body ng-controller="HomeCtrl" layout="row">
-        <md-sidenav md-is-locked-open="$mdMedia('gt-sm')" class="md-whiteframe-z2" md-component-id="left">
-            <md-toolbar class="md-medium md-hue-2 bottomShadow">
-                <span flex></span>
-                <div layout="column" class="md-toolbar-tools-bottom inset">
-                    <% if(user.local.username) { %>
-                        <div><%= user.local.username %></div>
-                        <div>(Local login)</div>
-                    <% } else if (user.facebook.name) { %>
-                        <div><%= user.facebook.name %></div>
-                        <div>(Facebook login)</div>
-                    <% } else if (user.google.name) { %>
-                        <div><%= user.google.name %></div>
-                        <div>(Google+ login)</div>
-                    <% } %>
-                </div>
-            </md-toolbar>
-            
-            <md-list>
-                <md-list-item ng-repeat="item in menu">
-                    <md-button class="wideButton textLeftAlign" href="{{item.link}}">
-                        <ng-md-icon icon="{{item.icon}}"></ng-md-icon>
-                        <span class="sidenavButtonText">
-                            {{item.title}}
-                        </span>
-                    </md-button>
-                </md-list-item>
-            </md-list>
-            
-            <md-divider></md-divider>
-            <md-subheader>Management</md-subheader>
-            
-            <md-list>
-                <md-list-item ng-repeat="item in admin">
-                    <md-button class="wideButton textLeftAlign" href="{{item.link}}">
-                        <ng-md-icon icon="{{item.icon}}"></ng-md-icon>
-                        <span class="sidenavButtonText">
-                            {{item.title}}
-                        </span>
-                    </md-button>
-                </md-list-item>
-            </md-list>
-        </md-sidenav>
+    <body ng-controller="HomeCtrl">
         
-        <div layout="column" class="relative" layout-fill role="main">
-            <md-toolbar ng-show="!showSearch">
-                <div class="md-toolbar-tools">
-                    <md-button ng-click="toggleSidenav('left')" hide-gt-sm aria-label="Menu">
-                        <ng-md-icon icon="menu"></ng-md-icon>
-                        Menu
-                    </md-button>
-                    <span flex></span>
-                    <md-button aria-label="Search" ng-click="showSearch = !showSearch">
-                        <ng-md-icon icon="search"></ng-md-icon>
-                    </md-button>
-                    <md-button aria-label="Open Settings" ng-click="showListBottomSheet($event)">
-                        <ng-md-icon icon="more_vert"></ng-md-icon>
-                    </md-button>
-                </div>
-                <md-tabs md-stretch-tabs class="md-primary" md-selected="data.selectedIndex">
-                    <md-tab id="tab1" aria-controls="tab1-content">
-                        Latest
-                    </md-tab>
-                    <md-tab id="tab2" aria-controls="tab2-content">
-                        Favorites
-                    </md-tab>
-                </md-tabs>
-            </md-toolbar>
-            
-            <md-toolbar class="md-hue-1" ng-show="showSearch">
-                <div class="md-toolbar-tools">
-                    <md-button ng-click="showSearch = !showSearch" aria-label="Back">
-                        <ng-md-icon icon="arrow_back"></ng-md-icon>
-                    </md-button>
-                    <h3 flex="10">Back</h3>
-                    <md-input-container md-theme="input" flex>
-                        <label>&nbsp;</label>
-                        <input ng-model="search.who" placeholder="enter search">
-                    </md-input-container>
-                    <md-button aria-label="Search" ng-click="showSearch = !showSearch">
-                        <ng-md-icon icon="search"></ng-md-icon>
-                    </md-button>
-                    <md-button aria-label="Open Settings" ng-click="showListBottomSheet($event)">
-                        <ng-md-icon icon="more_vert"></ng-md-icon>
-                    </md-button>
-                </div>
-            </md-toolbar>
-        </div>
-<!--
-        <div id="pageHeader">
-            <div id="brand">Dropboks</div>
-            <div id="userInfo">
-                <% if(user.local.username) { %>
-                    <p>(Local) <%= user.local.username %></p>
-                <% } else if (user.facebook.name) { %>
-                    <p>(FB) <%= user.facebook.name %></p>
-                <% } else if (user.google.name) { %>
-                    <p>(G+) <%= user.google.name %></p>
-                <% } %>
-                <p><a href="/logout">Log out</a></p>
-            </div>
-        </div>
-        <div class="container">
+        <!-- Slide out menu -->
+        <ul id="slide-out" class="side-nav fixed blue-grey lighten-5">
             <div class="row">
-                <div class="col-xs-12">
+                <div class="col s12">
+                    <div class="card blue-grey">
+                        <div class="card-content white-text">
+                            <% if(user.local.username) { %>
+                            <span class="card-title"><%= user.local.username %></span>
+                            <p>(Local login)</p>
+                            <% } else if (user.facebook.name) { %>
+                            <span class="card-title"><%= user.facebook.name %></span>
+                            <p>(Facebook login)</p>
+                            <% } else if (user.google.name) { %>
+                            <span class="card-title"><%= user.google.name %></span>
+                            <p>(Google+ login)</p>
+                            <% } %>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <li class="divider"></li>
+            <li><a href="/home">Home</a></li>
+            <li><a href="/settings">Settings</a></li>
+            <li class="divider"></li>
+            <li><a href="/logout">Log out</a></li>
+        </ul>
+        
+        <!-- Top navbar -->
+        <nav class="blue-grey">
+            <div class="nav-wrapper">
+                <a href="/" class="brand">Dropboks</a>
+                <ul class="left navbar-collapse">
+                    <a href="#" data-activates="slide-out" class="button-collapse"><i class="material-icons">menu</i></a>
+                </ul>
+            </div>
+        </nav>
+        
+        <!-- Main content -->
+        <div id="main">
+            <!-- Tabs -->
+            <ul id="tabs" class="tabs blue-grey lighten-5">
+                <li class="tab col s6"><a href="/public">Public</a></li>
+                <li class="tab col s6"><a href="/private">Private</a></li>
+            </ul>
+            
+            <div class="row">
+                <div class="col s12">
                     <h4>Upload on file select</h4>
 
-                    <button ngf-select="uploadFiles($files)" multiple 
+                    <button ngf-select="uploadFiles($files)" multiple class="btn"
                             accept="*">Select Files</button>
                     <br>
                     <br>Files:
@@ -138,11 +83,11 @@
                     
                     <input type="text" ng-model="username"><br/><br/>
                     watching model:
-                    <div class="btn btn-default" ngf-select ng-model="file" ngf-multiple="false">Select File</div>
+                    <div class="btn" ngf-select ng-model="file" ngf-multiple="false">Select File</div>
                     <br>
                     <br>
                     on file change multiple:
-                    <div class="btn btn-default" ngf-select="upload($files)" ngf-multiple="true">Select File</div>
+                    <div class="btn" ngf-select="upload($files)" ngf-multiple="true">Select File</div>
                     <br>
                     <br>
                     Drop File:
@@ -160,13 +105,10 @@
                 </div>
             </div>
         </div>
--->
         
+        <script src="/bower_components/jquery/dist/jquery.min.js"></script>
         <script src="/bower_components/angular/angular.min.js"></script>
-        <script src="/bower_components/angular-aria/angular-aria.min.js"></script>
-        <script src="/bower_components/angular-animate/angular-animate.min.js"></script>
-        <script src="/bower_components/angular-material/angular-material.min.js"></script>
-        <script src="/bower_components/angular-material-icons/angular-material-icons.min.js"></script>
+        <script src="/bower_components/Materialize/dist/js/materialize.min.js"></script>
         <script src="/bower_components/ng-file-upload/ng-file-upload.min.js"></script>
         <script src="/controllers/homeController.js"></script>
     </body>

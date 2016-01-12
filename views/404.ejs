@@ -1,38 +1,36 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         <script type="text/javascript">
             var idx = window.location.toString().indexOf("#");
             if (idx > 0) {
                 window.location = window.location.toString().substring(0, idx);
             }
         </script>
-        <title>404 - Not found - Dropboks</title>
-        
-        <link rel="stylesheet" href="/bower_components/bootstrap/dist/css/bootstrap.min.css">
+        <title>404 - Dropboks</title>
+        <link rel="stylesheet" href="/bower_components/Materialize/dist/css/materialize.min.css">
         <link rel="stylesheet" href="/css/custom.css">
-        <script src="/controllers/homeController.js"></script>
+        <style>
+            .container {
+                padding-top: 150px;
+            }
+        </style>
     </head>
     <body>
-        <div id="pageHeader">
-            <div id="brand">Dropboks</div>
-            <div id="userInfo">
-                <% if(user.local.username) { %>
-                    <p>(Local) <%= user.local.username %></p>
-                <% } else if (user.facebook.name) { %>
-                    <p>(FB) <%= user.facebook.name %></p>
-                <% } else if (user.google.name) { %>
-                    <p>(G+) <%= user.google.name %></p>
-                <% } %>
-                <p><a href="/logout">Log out</a></p>
+        <nav>
+            <div class="nav-wrapper">
+                <a href="/" class="brand">Dropboks</a>
+                <ul id="nav-mobile" class="right">
+                    <li><a href="/auth/signup">Signup</a></li>
+                    <li><a href="/auth/about">About</a></li>
+                </ul>
             </div>
-        </div>
-        <div class="container">
-            <div class="row">
-                <h1>404</h1>
-                <h2>Requested page not found</h2>
-                <p><a href="/">Home page</a></p>
-            </div>
-        </div>
+        </nav>
+        
+        404 not found
+        
+        <script src="/bower_components/jquery/dist/jquery.min.js"></script>
+        <script src="/bower_components/Materialize/dist/js/materialize.min.js"></script>
     </body>
 </html>

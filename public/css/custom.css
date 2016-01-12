@@ -6,50 +6,36 @@ body {
     background: #FFFFFF;
 }
 
-md-sidenav {
-    fill: #737373;
-}
-
-md-sidenav ng-md-icon {
-    position: relative;
-    top: 5px;
-}
-
-.md-toolbar-tools-bottom {
-    font-size: medium
-}
-
-.md-toolbar-tools-bottom :last-child {
-    opacity: 0.8;
-}
-
 .wideButton {
     width: 100%;
 }
 
-.textLeftAlign {
-    text-align: left;
+.brand {
+    padding: 10px;
+    font-size: 24px;
 }
 
-.sidenavButtonText {
-    padding-left: 10px;
+/* Smaller than 992 px */
+@media only screen and (max-width : 992px) {
+    #main {
+        padding-left: 0;
+/*        padding: 20px;*/
+    }
 }
 
-#credentialsForm {
-    max-width: 400px;
+/* Bigger than 993 px */
+@media only screen and (min-width: 993px) {
+    #main {
+/*        padding: 20px;*/
+        padding-left: 240px;
+    }
+    
+    .navbar-collapse {
+        display: none;
+    }
+    
+    .brand {
+        margin-left: 260px;
+    }
 }
 
-.flexCenter {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.loginIcon {
-    position: relative;
-    top: 6px;
-}
-
-.bottomShadow {
-    box-shadow: 0 2px 5px 2px #6082B3;
-}

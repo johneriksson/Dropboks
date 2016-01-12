@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html ng-app="myApp">
+<html>
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <script type="text/javascript">
@@ -8,48 +8,60 @@
                 window.location = window.location.toString().substring(0, idx);
             }
         </script>
-        <title>Login - Dropboks</title>
-        <link rel="stylesheet" href="/bower_components/angular-material/angular-material.min.css">
+        <title>Signup - Dropboks</title>
+        <link rel="stylesheet" href="/bower_components/Materialize/dist/css/materialize.min.css">
         <link rel="stylesheet" href="/css/custom.css">
         <style>
-            .topPadding {
+            .container {
                 padding-top: 150px;
             }
         </style>
     </head>
-    <body ng-controller="SignupCtrl" layout="column">
-        <md-toolbar>
-            <div class="md-toolbar-tools">
-                <span style="font-size: 30px;">Dropboks</span>
+    <body>
+        <nav>
+            <div class="nav-wrapper">
+                <a href="/" class="brand">Dropboks</a>
+                <ul id="nav-mobile" class="right">
+                    <li><a href="/auth/login">Login</a></li>
+                    <li><a href="/auth/about">About</a></li>
+                </ul>
             </div>
-        </md-toolbar>
-        <div layout-align="center center" class="topPadding">
-            <div class="flexCenter">
-                <form action="/auth/signup" method="post" id="credentialsForm">
-                    <div layout="row" layout-align="center center" layout-padding>
-                        <md-input-container flex>
-                            <label>Username</label>
-                            <input type="text" name="username" required>
-                        </md-input-container>
-                        <md-input-container flex>
-                            <label>Password</label>
-                            <input type="password" name="password" required>
-                        </md-input-container>
-                    </div>
-                    <div layout="row" layout-align="center center">
-                        <md-button class="md-raised md-primary" type="submit" flex>Sign up</md-button>
+        </nav>
+        
+        <div class="container">
+            <div class="row">
+                <div class="col s12 m8 offset-m2 l6 offset-l3">
+                    <form action="/auth/signup" method="post" id="credentialsForm">
+                        <div class="row">
+                            <div class="input-field col s6">
+                                <input id="username" type="text">
+                                <label for="username">Username</label>
+                            </div>
+                            <div class="input-field col s6">
+                                <input id="password" type="password">
+                                <label for="password">Password</label>
+                            </div>
+                        </div>
+
                         <% if (message.length > 0) { %>
+                        <div class="row">
                             <div class="errorMessage"><%= message %></div>
+                        </div>
                         <% } %>
-                    </div>
-                </form>
+
+                        <div class="row">
+                            <div class="col s12">
+                                <button class="btn waves-effect waves-light wideButton" type="submit">
+                                    Sign up
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
-        <script src="/bower_components/angular/angular.min.js"></script>
-        <script src="/bower_components/angular-animate/angular-animate.min.js"></script>
-        <script src="/bower_components/angular-aria/angular-aria.min.js"></script>
-        <script src="/bower_components/angular-material/angular-material.min.js"></script>
-        <script src="/bower_components/angular-material-icons/angular-material-icons.min.js"></script> 
-        <script src="/controllers/signupController.js"></script>
+        
+        <script src="/bower_components/jquery/dist/jquery.min.js"></script>
+        <script src="/bower_components/Materialize/dist/js/materialize.min.js"></script>
     </body>
 </html>

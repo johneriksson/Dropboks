@@ -50,6 +50,10 @@ module.exports = function(router, passport) {
         failureRedirect: "/auth/login"
     }));
     
+    router.get("/about", function(req, res) {
+        res.render("about.ejs");
+    });
+    
     //404
     router.get("*", function(req, res) {
         res.render("404.ejs");

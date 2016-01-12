@@ -1,7 +1,14 @@
 
-var myApp = angular.module("myApp", ["ngFileUpload", "ngMaterial", "ngMdIcons"]);
+var myApp = angular.module("myApp", ["ngFileUpload"]);
 
-myApp.controller("HomeCtrl", ["$scope", "$http", "$timeout", "Upload", "$mdSidenav", function($scope, $http, $timeout, Upload, $mdSidenav) {
+myApp.controller("HomeCtrl", ["$scope", "$http", "$timeout", "Upload", function($scope, $http, $timeout, Upload) {
+    
+    $(document).ready(function(){
+        // Initialize collapse button
+        $(".button-collapse").sideNav();
+        
+        $('ul.tabs').tabs();
+    });
     
     $scope.uploadFiles = function (files) {
         $scope.files = files;
@@ -65,53 +72,4 @@ myApp.controller("HomeCtrl", ["$scope", "$http", "$timeout", "Upload", "$mdSiden
             }
         }
     };
-    
-    $scope.toggleSidenav = function(menuId) {
-        $mdSidenav(menuId).toggle();
-    };
-    
-    $scope.menu = [
-        {
-            link: '/home',
-            title: 'Home',
-            icon: 'home'
-        },
-        {
-            link: '/myfiles',
-            title: 'My files',
-            icon: 'work'
-        }
-    ];
-    
-    $scope.admin = [
-        {
-            link: '/settings',
-            title: 'Settings',
-            icon: 'settings'
-        },
-        {
-            link: '/logout',
-            title: 'Log out',
-            icon: 'logout'
-        }
-    ];
-    
 }]);
-
-myApp.config(function($mdThemingProvider) {
-    var customBlueMap = $mdThemingProvider.extendPalette('light-blue', {
-        'contrastDefaultColor': 'light',
-        'contrastDarkColors': ['50'],
-        '50': 'ffffff'
-    });
-    
-    $mdThemingProvider.definePalette('customBlue', customBlueMap);
-    
-    $mdThemingProvider.theme('default')
-        .primaryPalette('customBlue', {
-        'default': '500',
-        'hue-1': '50'
-    }).accentPalette('pink');
-    
-    $mdThemingProvider.theme('input', 'default').primaryPalette('grey');
-});
