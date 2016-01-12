@@ -10,6 +10,36 @@ myApp.controller("HomeCtrl", ["$scope", "$http", "$timeout", "Upload", function(
         $('ul.tabs').tabs();
     });
     
+    $scope.isSearching = false;
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     $scope.uploadFiles = function (files) {
         $scope.files = files;
         if (files && files.length) {
@@ -32,7 +62,6 @@ myApp.controller("HomeCtrl", ["$scope", "$http", "$timeout", "Upload", function(
             });
         }
     };
-    
     
     //
     //

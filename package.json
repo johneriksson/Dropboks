@@ -19,12 +19,14 @@
     "ejs": "latest",
     "express": "latest",
     "express-session": "latest",
+    "gridfs-stream": "^1.1.1",
     "kerberos": "0.0.17",
     "moment": "^2.11.0",
     "mongoose": "latest",
     "passport": "latest",
     "passport-facebook": "^2.0.0",
     "passport-google-oauth": "^0.2.0",
-    "passport-local": "latest"
+    "passport-local": "latest",
+    "utf8": "^2.1.1"
   }
 }

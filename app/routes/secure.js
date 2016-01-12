@@ -3,14 +3,16 @@ var multipartyMiddleware = multiparty({uploadDir: "./uploads/"});
 
 var bson = require("bson");
 var BSON = new bson.BSONPure.BSON();
-var maxFileSize = 1024 * 1024 * 16; // 16 MB
 var fs = require("fs");
-
+var utf8 = require("utf8");
+var Grid = require('gridfs-stream');
 var moment = require("moment");
 
 var File = require("../models/file");
+var User = require("../models/user");
 
-module.exports = function(router, passport) {
+module.exports = function(router, mongoose) {
+    Grid.mongo = mongoose.mongo;
     
     router.use(function(req, res, next) {
         if(req.isAuthenticated()) {
@@ -34,81 +36,147 @@ module.exports = function(router, passport) {
         res.redirect("/auth/login");
     });
     
+    router.get("/searchUsers/:username", function(req, res) {
+        var username = req.params.username;
+        
+        User.find({"username": {"$regex": username, "$options": "i"}}, function(err, docs) {
+            if(err)
+                res.status(500).send();
+            else {
+                var response = [];
+                docs.forEach(function(doc) {
+                    response.push(doc.username);
+                });
+                res.json(response);
+            }
+        })
+    });
+    
     router.post("/upload", multipartyMiddleware, function(req, res) {
         if(req.files.file != undefined) {
-            var file = req.files.file;
-            console.log(file);
+            var uploadedFile = req.files.file;
             
-            if(file.size > maxFileSize) {
-                res.json({success: false});
-                return;
-            }
-            
-            fs.readFile(file.path, function (err, data) {
-                if (err) {
-                    //Error
-                    console.error(err);
-                    res.json({success: false});
-                    
-                    fs.unlinkSync(file.path);
-                } else {
-                    //Success
-                    process.nextTick(function() {
-                        var filedata = BSON.serialize(data, false, true, false);
-                        
-                        var newFile = new File();
-                        newFile.filename = file.originalFilename;
-                        newFile.private = false;
-                        newFile.size = file.size;
-                        newFile.owner = req.user._id;
-                        newFile.timestamp = moment().format("YYYY-MM-DD HH:mm:ss");
-                        newFile.data = filedata;
-                        
-                        newFile.save(function(err, savedFile) {
-                            if(err)
-                                res.json({success: false});
-                            else {
-                                res.json({success: true});
-                                console.log(savedFile._id);
-                            }
-                        });
-                        
-                        fs.unlinkSync(file.path);
-                    });
-                }
+            var gfs = Grid(mongoose.connection.db);
+
+            var writestream = gfs.createWriteStream({
+                filename: uploadedFile.originalFilename
+            });
+            fs.createReadStream("./" + uploadedFile.path).pipe(writestream);
+
+            writestream.on('close', function (file) {
+                var newFile = new File();
+                newFile.filename = uploadedFile.originalFilename;
+                newFile.private = false;
+                newFile.owner = req.user._id;
+                newFile.timestamp = moment().format("YYYY-MM-DD HH:mm:ss");
+                newFile.file_id = file._id;
+                newFile.size = file.length;
+                
+                newFile.save(function(err, doc) {
+                    if(err) {
+                        console.log(err);
+                        res.json({success: false});
+                    } else {
+                        res.json({sucess: true});
+                    }
+                });
+                
+                fs.unlinkSync(uploadedFile.path);
             });
         }
     });
     
     router.get("/file/:fileid", function(req, res) {
+        var fileid = req.params.fileid;
+        
         process.nextTick(function() {
-            File.findOne({ "_id": req.params.fileid }, function(err, file) {
+            File.findOne({"_id": fileid}, function(err, file) {
                 if(err)
                     res.status(500).send();
                 if(!file)
-                    res.status(404).send();
+                    res.status(400).send();
                 else {
-                    console.log(file.filename);
+                    var path = './uploads/' + file.filename;
+                    var gfs = Grid(mongoose.connection.db);
                     
-                    var path = "./uploads/" + file.filename;
-                    var data = BSON.deserialize(file.data);
-                    fs.writeFile(path, data, function(err) {
-                        if(err){
-                            console.log(err);
-                            res.status(500).send();
-                        } else {
-                            res.download(path);
-                            fs.unlinkSync(path);
-                        }
+                    var fs_write_stream = fs.createWriteStream(path);
+        
+                    var readstream = gfs.createReadStream({
+                         _id: file.file_id
                     });
-                    res.status(200).send();
+                    readstream.pipe(fs_write_stream);
+
+                    fs_write_stream.on('close', function() {
+                        res.download(path);
+                    });
                 }
             });
         });
     });
     
-    router.get("/files/", function(req, res) {
+    router.post("/remove", function(req, res) {
+        var fileId = req.body.fileId;
         
+        console.log(fileId);
+        
+        File.findOne({"_id": fileId}, function(err, doc) {
+            if(err)
+                res.status(500).send();
+            if(!doc)
+                res.status(400).send();
+            else {
+                if(doc.owner != req.user._id)
+                    res.status(403).send();
+                else {
+                    var gfs = Grid(mongoose.connection.db);
+                    
+                    gfs.remove({"_id": doc.file_id}, function (err) {
+                        if(err)
+                            res.status(500).send();
+                        else {
+                            File.remove({"_id": fileId}, function(err) {
+                                if(err)
+                                    res.status(500).send();
+                                else
+                                    res.status(200).send();    
+                            })
+                        }
+                    });
+                }
+            }
+        });
+    });
+    
+    router.get("/private", function(req, res) {
+        var userId = req.user._id;
+        
+        File.find({"owner": userId}, function(err, docs) {
+            if(err)
+                res.status(500).send();
+            else {
+                res.json(docs);
+            }
+        });
+    });
+    
+    router.get("/public/:username", function(req, res) {
+        var username = req.params.username;
+        
+        User.findOne({"username": username}, function(err, doc) {
+            if(err)
+                res.status(500).send();
+            if(!doc)
+                res.status(400).send();
+            else {
+                File.find({"owner": doc._id, "private": false}, function(err, docs) {
+                    if(err)
+                        res.status(500).send();
+                    else {
+                        res.json(docs);
+                    }
+                });
+            }
+        });
     });
     
     //404

@@ -2,6 +2,7 @@ var mongoose = require("mongoose");
 var bcrypt = require("bcrypt");
 
 var userSchema = mongoose.Schema({
+    username: String,
     local: {
         username: String,
         password: String

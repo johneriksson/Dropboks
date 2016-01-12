@@ -22,7 +22,7 @@ module.exports = function(passport) {
         passReqToCallback: true
     }, function(req, username, password, done) {
         process.nextTick(function() {
-            User.findOne({"local.username": username}, function(err, user) {
+            User.findOne({"username": username}, function(err, user) {
                 if(err)
                     return done(err);
                 if(user)
@@ -31,11 +31,13 @@ module.exports = function(passport) {
                 var newUser = new User();
                 newUser.local.username = username;
                 newUser.local.password = newUser.generateHash(password);
+                newUser.username = username;
+                
                 newUser.save(function(err) {
                     if(err)
                        throw err;
 
-                    return done(null, newUser); 
+                    return done(null, newUser);
                 });
             });
         });
@@ -78,6 +80,7 @@ module.exports = function(passport) {
                 newUser.facebook.token = accessToken;
                 newUser.facebook.name = profile.name.givenName + " " + profile.name.familyName;
                 newUser.facebook.email = profile.emails[0].value;
+                newUser.username = newUser.facebook.email;
                 
                 newUser.save(function(err) {
                     if(err)
@@ -106,6 +109,7 @@ module.exports = function(passport) {
                 newUser.google.token = accessToken;
                 newUser.google.name = profile.displayName;
                 newUser.google.email = profile.emails[0].value;
+                newUser.username = newUser.google.email;
                 
                 newUser.save(function(err) {
                     if(err)

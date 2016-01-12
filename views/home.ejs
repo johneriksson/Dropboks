@@ -37,7 +37,7 @@
                 </div>
             </div>
             <li class="divider"></li>
-            <li><a href="/home">Home</a></li>
+            <li><a href="/private">My files</a></li>
             <li><a href="/settings">Settings</a></li>
             <li class="divider"></li>
             <li><a href="/logout">Log out</a></li>
@@ -46,9 +46,13 @@
         <!-- Top navbar -->
         <nav class="blue-grey">
             <div class="nav-wrapper">
-                <a href="/" class="brand">Dropboks</a>
                 <ul class="left navbar-collapse">
                     <a href="#" data-activates="slide-out" class="button-collapse"><i class="material-icons">menu</i></a>
+                </ul>
+                <a href="/" class="brand" ng-show="!isSearching">Dropboks</a>
+                <input type="search" ng-show="isSearching" ng-blur="isSearching = false">
+                <ul class="right">
+                    <button class="btn" ng-click="isSearching = true;" ng-show="!isSearching">Search</button>
                 </ul>
             </div>
         </nav>
@@ -61,8 +65,14 @@
                 <li class="tab col s6"><a href="/private">Private</a></li>
             </ul>
             
+<!--            <div ng-view></div>-->
+            
+            
             <div class="row">
                 <div class="col s12">
+                    <input type="text" ng-model="id">
+                    <button ng-click="remove(id)">Remove</button>
+                    
                     <h4>Upload on file select</h4>
 
                     <button ngf-select="uploadFiles($files)" multiple class="btn"
