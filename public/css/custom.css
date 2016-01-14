@@ -6,8 +6,25 @@ body {
     background: #FFFFFF;
 }
 
+table th {
+    background: #F7F7F7;
+    width: 25%;
+}
+
+table th:not(:last-child) {
+    cursor: pointer;
+    border-right: 1px solid #D0D0D0;
+/*    padding-left: 50px;*/
+}
+
 .wideButton {
     width: 100%;
+}
+
+.btn-action {
+    width: 35px;
+    text-align: center;
+    padding: 0 8px;
 }
 
 .brand {
@@ -15,18 +32,42 @@ body {
     font-size: 24px;
 }
 
+.padding-right {
+    padding-right: 10px;
+}
+
+.username-in-search {
+    cursor: pointer;
+}
+
+.upload {
+    padding: 5px;
+}
+
+.padding10 {
+    padding: 10px;
+}
+
+.username {
+    font-size: 16px;
+    max-width: 220px;
+    word-wrap: break-word;
+}
+
+.order {
+    color: gray;
+}
+
 /* Smaller than 992 px */
 @media only screen and (max-width : 992px) {
     #main {
         padding-left: 0;
-/*        padding: 20px;*/
     }
 }
 
 /* Bigger than 993 px */
 @media only screen and (min-width: 993px) {
     #main {
-/*        padding: 20px;*/
         padding-left: 240px;
     }
     

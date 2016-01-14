@@ -10,26 +10,24 @@
         </script>
         <title>Home - Dropboks</title>
         
+        <link rel="stylesheet" href="/bower_components/normalize-css/normalize.css">
         <link rel="stylesheet" href="/bower_components/Materialize/dist/css/materialize.min.css">
         <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
         <link rel="stylesheet" href="/css/custom.css">
     </head>
     <body ng-controller="HomeCtrl">
-        
         <!-- Slide out menu -->
         <ul id="slide-out" class="side-nav fixed blue-grey lighten-5">
             <div class="row">
                 <div class="col s12">
                     <div class="card blue-grey">
                         <div class="card-content white-text">
+                            <span class="username"><%= user.username %></span>
                             <% if(user.local.username) { %>
-                            <span class="card-title"><%= user.local.username %></span>
                             <p>(Local login)</p>
                             <% } else if (user.facebook.name) { %>
-                            <span class="card-title"><%= user.facebook.name %></span>
                             <p>(Facebook login)</p>
                             <% } else if (user.google.name) { %>
-                            <span class="card-title"><%= user.google.name %></span>
                             <p>(Google+ login)</p>
                             <% } %>
                         </div>
@@ -37,83 +35,24 @@
                 </div>
             </div>
             <li class="divider"></li>
-            <li><a href="/private">My files</a></li>
-            <li><a href="/settings">Settings</a></li>
+            <li><a href="#" ng-click="visitSelf()">My files</a></li>
+            <li><a href="#">Settings</a></li>
             <li class="divider"></li>
             <li><a href="/logout">Log out</a></li>
         </ul>
         
+        
         <!-- Top navbar -->
-        <nav class="blue-grey">
-            <div class="nav-wrapper">
-                <ul class="left navbar-collapse">
-                    <a href="#" data-activates="slide-out" class="button-collapse"><i class="material-icons">menu</i></a>
-                </ul>
-                <a href="/" class="brand" ng-show="!isSearching">Dropboks</a>
-                <input type="search" ng-show="isSearching" ng-blur="isSearching = false">
-                <ul class="right">
-                    <button class="btn" ng-click="isSearching = true;" ng-show="!isSearching">Search</button>
-                </ul>
-            </div>
-        </nav>
+        <div ng-include="'/partials/navbar.html'"></div>
         
         <!-- Main content -->
         <div id="main">
-            <!-- Tabs -->
-            <ul id="tabs" class="tabs blue-grey lighten-5">
-                <li class="tab col s6"><a href="/public">Public</a></li>
-                <li class="tab col s6"><a href="/private">Private</a></li>
-            </ul>
-            
-<!--            <div ng-view></div>-->
-            
-            
-            <div class="row">
-                <div class="col s12">
-                    <input type="text" ng-model="id">
-                    <button ng-click="remove(id)">Remove</button>
-                    
-                    <h4>Upload on file select</h4>
-
-                    <button ngf-select="uploadFiles($files)" multiple class="btn"
-                            accept="*">Select Files</button>
-                    <br>
-                    <br>Files:
-                    <ul>
-                        <li ng-repeat="f in files" style="font:smaller">
-                            {{f.name}}
-                        </li>
-                    </ul>
-                    <span class="progress" ng-show="progress >= 0">
-                        <div style="width:{{progress}}%" ng-bind="progress + '%'"></div>
-                    </span>
-                    {{errorMsg}}
-                    
-                    <hr>
-                    
-                    <input type="text" ng-model="username"><br/><br/>
-                    watching model:
-                    <div class="btn" ngf-select ng-model="file" ngf-multiple="false">Select File</div>
-                    <br>
-                    <br>
-                    on file change multiple:
-                    <div class="btn" ngf-select="upload($files)" ngf-multiple="true">Select File</div>
-                    <br>
-                    <br>
-                    Drop File:
-                    <div ngf-drop ngf-select ng-model="files" class="drop-box" 
-                        ngf-drag-over-class="'dragover'" ngf-multiple="true" ngf-allow-dir="true"
-                        accept="*" 
-                        ngf-pattern="'*'">Drop files here or click to upload</div>
-                    <div ngf-no-file-drop>File Drag/Drop is not supported for this browser</div>
-                    Files:
-                    <ul>
-                        <li ng-repeat="f in files" style="font:smaller">{{f.name}} {{f.$error}} {{f.$errorParam}}</li>
-                    </ul>
-                    Upload Log:
-                    <pre>{{log}}</pre>
-                </div>
+            <div class="searchResult">
+                <div ng-repeat="username in searchResult" ng-click="visitUser(username)" class="card-panel blue-grey lighten-3 username-in-search">{{username}}</div>
             </div>
+            
+            <div ng-if="mine" ng-include="'/partials/mine.html'"></div>
+            <div ng-if="!mine" ng-include="'/partials/theirs.html'"></div>
         </div>
         
         <script src="/bower_components/jquery/dist/jquery.min.js"></script>

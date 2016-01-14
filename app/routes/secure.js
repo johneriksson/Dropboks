@@ -22,9 +22,9 @@ module.exports = function(router, mongoose) {
         res.redirect("/auth/login");
     });
     
-    router.get("/", function(req, res) {
-        res.redirect("/home");
-    });
+//    router.get("/", function(req, res) {
+//        res.redirect("/home");
+//    });
     
     //Serve home page
     router.get("/home", function(req, res) {
@@ -55,6 +55,7 @@ module.exports = function(router, mongoose) {
     router.post("/upload", multipartyMiddleware, function(req, res) {
         if(req.files.file != undefined) {
             var uploadedFile = req.files.file;
+            var private = req.headers.private;
             
             var gfs = Grid(mongoose.connection.db);
 
@@ -66,7 +67,7 @@ module.exports = function(router, mongoose) {
             writestream.on('close', function (file) {
                 var newFile = new File();
                 newFile.filename = uploadedFile.originalFilename;
-                newFile.private = false;
+                newFile.private = private != undefined ? private : false;
                 newFile.owner = req.user._id;
                 newFile.timestamp = moment().format("YYYY-MM-DD HH:mm:ss");
                 newFile.file_id = file._id;
@@ -74,7 +75,6 @@ module.exports = function(router, mongoose) {
                 
                 newFile.save(function(err, doc) {
                     if(err) {
-                        console.log(err);
                         res.json({success: false});
                     } else {
                         res.json({sucess: true});
@@ -116,8 +116,6 @@ module.exports = function(router, mongoose) {
     
     router.post("/remove", function(req, res) {
         var fileId = req.body.fileId;
-        
-        console.log(fileId);
         
         File.findOne({"_id": fileId}, function(err, doc) {
             if(err)
@@ -172,7 +170,15 @@ module.exports = function(router, mongoose) {
                     if(err)
                         res.status(500).send();
                     else {
-                        res.json(docs);
+                        var response = [];
+                        docs.forEach(function(file) {
+                            response.push({
+                                filename: file.filename,
+                                size: file.size,
+                                timestamp: file.timestamp
+                            });
+                        });
+                        res.json(response);
                     }
                 });
             }

@@ -6,7 +6,7 @@ var fileSchema = mongoose.Schema({
     owner: String,
     timestamp: String,
     file_id: String,
-    size: Number
+    size: String
 });
 
 module.exports = mongoose.model("File", fileSchema);
