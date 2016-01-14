@@ -1,0 +1,8 @@
+{
+  "name": "Dropboks" ,
+  "description": "A file sharing web site",
+  "repository": "https://github.com/johneriksson/Dropboks",
+  "logo": "",
+  "keywords": ["node", "express", "mongodb"],
+  "image": "heroku/nodejs"
+}
