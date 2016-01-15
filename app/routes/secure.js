@@ -1,5 +1,6 @@
 var multiparty = require('connect-multiparty');
-var multipartyMiddleware = multiparty({uploadDir: "./uploads/"});
+var multipartyMiddleware = multiparty({uploadDir: "/tmp/"});
+//var multipartyMiddleware = multiparty({uploadDir: "./uploads/"});
 
 var bson = require("bson");
 var BSON = new bson.BSONPure.BSON();
@@ -96,7 +97,8 @@ module.exports = function(router, mongoose) {
                 if(!file)
                     res.status(400).send();
                 else {
-                    var path = './uploads/' + file.filename;
+                    //var path = './uploads/' + file.filename;
+                    var path = '/tmp/' + file.filename;
                     var gfs = Grid(mongoose.connection.db);
                     
                     var fs_write_stream = fs.createWriteStream(path);
