@@ -64,7 +64,7 @@ module.exports = function(router, mongoose) {
                 filename: uploadedFile.originalFilename
             });
             //fs.createReadStream("./" + uploadedFile.path).pipe(writestream);
-            fs.createReadStream("/tmp/" + uploadedFile.path).pipe(writestream);
+            fs.createReadStream(uploadedFile.path).pipe(writestream);
 
             writestream.on('close', function (file) {
                 var newFile = new File();
