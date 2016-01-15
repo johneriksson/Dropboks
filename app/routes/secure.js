@@ -23,9 +23,9 @@ module.exports = function(router, mongoose) {
         res.redirect("/auth/login");
     });
     
-//    router.get("/", function(req, res) {
-//        res.redirect("/home");
-//    });
+    router.get("/", function(req, res) {
+        res.redirect("/home");
+    });
     
     //Serve home page
     router.get("/home", function(req, res) {
@@ -63,7 +63,8 @@ module.exports = function(router, mongoose) {
             var writestream = gfs.createWriteStream({
                 filename: uploadedFile.originalFilename
             });
-            fs.createReadStream("./" + uploadedFile.path).pipe(writestream);
+            //fs.createReadStream("./" + uploadedFile.path).pipe(writestream);
+            fs.createReadStream("/tmp/" + uploadedFile.path).pipe(writestream);
 
             writestream.on('close', function (file) {
                 var newFile = new File();
