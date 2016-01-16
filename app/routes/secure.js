@@ -111,6 +111,8 @@ module.exports = function(router, mongoose) {
 
                     fs_write_stream.on('close', function() {
                         res.download(path);
+                        
+                        fs.unlinkSync(path);
                     });
                 }
             });
