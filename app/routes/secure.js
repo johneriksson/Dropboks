@@ -99,7 +99,7 @@ module.exports = function(router, mongoose) {
                     }
                 });
                 
-                fs.unlinkSync(uploadedFile.path);
+//                fs.unlinkSync(uploadedFile.path);
             });
         }
     });
@@ -114,21 +114,20 @@ module.exports = function(router, mongoose) {
                 if(!file)
                     res.status(400).send();
                 else {
-                    //var path = './uploads/' + file.filename;
                     var path = '/tmp/' + file.filename;
-                    var gfs = Grid(mongoose.connection.db);
                     
-                    var fs_write_stream = fs.createWriteStream(path);
+                    var gfs = Grid(mongoose.connection.db);
         
                     var readstream = gfs.createReadStream({
                          _id: file.file_id
                     });
-                    readstream.pipe(fs_write_stream);
-
-                    fs_write_stream.on('close', function() {
-                        res.download(path);
-                        
-                        fs.unlinkSync(path);
+                    
+                    readstream.on("open", function() {
+                        readstream.pipe(res);
+                    });
+                    
+                    readstream.on("error", function(err) {
+                        res.end(err);    
                     });
                 }
             });
