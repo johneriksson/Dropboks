@@ -79,7 +79,6 @@ module.exports = function(router, mongoose) {
             var writestream = gfs.createWriteStream({
                 filename: uploadedFile.originalFilename
             });
-            //fs.createReadStream("./" + uploadedFile.path).pipe(writestream);
             fs.createReadStream(uploadedFile.path).pipe(writestream);
 
             writestream.on('close', function (file) {
@@ -99,7 +98,7 @@ module.exports = function(router, mongoose) {
                     }
                 });
                 
-//                fs.unlinkSync(uploadedFile.path);
+                fs.unlinkSync(uploadedFile.path);
             });
         }
     });
@@ -111,7 +110,7 @@ module.exports = function(router, mongoose) {
             File.findOne({"_id": fileid}, function(err, file) {
                 if(err)
                     res.status(500).send();
-                if(!file)
+                else if(!file)
                     res.status(400).send();
                 else {
                     var path = '/tmp/' + file.filename;
@@ -140,7 +139,7 @@ module.exports = function(router, mongoose) {
         File.findOne({"_id": fileId}, function(err, doc) {
             if(err)
                 res.status(500).send();
-            if(!doc)
+            else if(!doc)
                 res.status(400).send();
             else {
                 if(doc.owner != req.user._id)
@@ -177,13 +176,13 @@ module.exports = function(router, mongoose) {
         });
     });
     
-    router.get("/public/:username", function(req, res) {
+    router.get("/user/:username", function(req, res) {
         var username = req.params.username;
         
         User.findOne({"username": username}, function(err, doc) {
             if(err)
                 res.status(500).send();
-            if(!doc)
+            else if(!doc)
                 res.status(400).send();
             else {
                 File.find({"owner": doc._id, "private": false}, function(err, docs) {
@@ -193,6 +192,42 @@ module.exports = function(router, mongoose) {
                         var response = [];
                         docs.forEach(function(file) {
                             response.push({
+                                _id: file._id,
+                                filename: file.filename,
+                                size: file.size,
+                                timestamp: file.timestamp
+                            });
+                        });
+                        
+                        var data = {
+                            user: req.user,
+                            username: username,
+                            files: stringifyObj(response)
+                        }
+                        res.render("user.ejs", data);
+                    }
+                });
+            }
+        });
+    });
+    
+    router.get("/public/:username", function(req, res) {
+        var username = req.params.username;
+        
+        User.findOne({"username": username}, function(err, doc) {
+            if(err)
+                res.status(500).send();
+            else if(!doc)
+                res.status(400).send();
+            else {
+                File.find({"owner": doc._id, "private": false}, function(err, docs) {
+                    if(err)
+                        res.status(500).send();
+                    else {
+                        var response = [];
+                        docs.forEach(function(file) {
+                            response.push({
+                                _id: file._id,
                                 filename: file.filename,
                                 size: file.size,
                                 timestamp: file.timestamp

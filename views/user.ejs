@@ -8,7 +8,7 @@
                 window.location = window.location.toString().substring(0, idx);
             }
         </script>
-        <title>Home - Dropboks</title>
+        <title><%= username %> - Dropboks</title>
         
         <link rel="stylesheet" href="/bower_components/normalize-css/normalize.css">
         <link rel="stylesheet" href="/bower_components/Materialize/dist/css/materialize.min.css">
@@ -19,7 +19,7 @@
             window.files = JSON.parse("<%- files %>");
         </script>
     </head>
-    <body ng-controller="HomeCtrl">
+    <body ng-controller="UserCtrl">
         <!-- Slide out menu -->
         <ul id="slide-out" class="side-nav fixed blue-grey lighten-5">
             <div class="row">
@@ -39,7 +39,7 @@
                 </div>
             </div>
             <li class="divider"></li>
-            <li><a href="#" ng-click="visitSelf()">My files</a></li>
+            <li><a href="/home">My files</a></li>
             <li><a href="#">Settings</a></li>
             <li class="divider"></li>
             <li><a href="/logout">Log out</a></li>
@@ -77,20 +77,10 @@
             </div>
             
             <ul id="tabs" class="tabs blue-grey lighten-5">
-                <li class="tab col s6"><a href="#" ng-click="showPublic()">Public</a></li>
-                <li class="tab col s6"><a href="#" ng-click="showPrivate()">Private</a></li>
+                <li class="tab col s12"><a href="#"><%= username %></a></li>
             </ul>
 
             <br>
-
-            <div class="row">
-                <div class="col s12">
-                    <div class="btn wideButton" ngf-select="upload($files)" ngf-multiple="true">Select files to upload</div>
-                    <div class="progress" ng-show="uploading">
-                        <div class="determinate" style="width: {{uploadPerc}}%"></div>
-                    </div>
-                </div>
-            </div>
             
             <div class="row">
                 <div class="col s12">
@@ -116,13 +106,12 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr ng-repeat="fileInfo in filesCurrentlyShowing | orderBy: fileOrder">
+                            <tr ng-repeat="fileInfo in userFiles | orderBy: fileOrder">
                                 <td>{{fileInfo.filename}}</td>
                                 <td>{{fileInfo.formattedSize}}</td>
                                 <td>{{fileInfo.timestamp}}</td>
                                 <td>
                                     <button ng-click="download(fileInfo)" class="btn btn-action-small"><i class="material-icons left">file_download</i></button>
-                                    <button ng-click="remove(fileInfo)" class="btn btn-action-small" ng-if="mine"><i class="material-icons left">delete</i></button>
                                 </td>
                             </tr>
                         </tbody>
@@ -134,7 +123,6 @@
         <script src="/bower_components/jquery/dist/jquery.min.js"></script>
         <script src="/bower_components/angular/angular.min.js"></script>
         <script src="/bower_components/Materialize/dist/js/materialize.min.js"></script>
-        <script src="/bower_components/ng-file-upload/ng-file-upload.min.js"></script>
-        <script src="/controllers/homeController.js"></script>
+        <script src="/controllers/userController.js"></script>
     </body>
 </html>

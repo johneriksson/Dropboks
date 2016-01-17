@@ -4,6 +4,8 @@ var myApp = angular.module("myApp", ["ngFileUpload"]);
 myApp.controller("HomeCtrl", ["$scope", "$http", "$timeout", "Upload", homeController]);
 
 function homeController($scope, $http, $timeout, Upload) {
+    
+    //HELPER FUNCTIONS
     function round(number) {
         return Math.round(number * 10) / 10;
     }
@@ -19,6 +21,11 @@ function homeController($scope, $http, $timeout, Upload) {
             return round(size / (1024 * 1024 * 1024)) + " GB";
     }
     
+    //
+    //
+    //
+    
+    //Variables
     $scope.userFiles = [];
     $scope.filesCurrentlyShowing = [];
     $scope.mine = true;
@@ -28,14 +35,11 @@ function homeController($scope, $http, $timeout, Upload) {
     $scope.currentlyVisiting = null;
     $scope.fileOrder = "filename";
     
-    //Load files from ejs
-    var files = window.files;
-    files.forEach(function(file) {
-        file.formattedSize = formatSize(file.size);
-    });
-    $scope.userFiles = files;
-    $scope.showPublic();
+    //
+    //
+    //
     
+    //Scope functions
     $scope.searchUsers = function() {
         if($scope.searchString.length > 0) {
             $http.get("/searchUsers/" + $scope.searchString).then(function(response) {
@@ -63,11 +67,6 @@ function homeController($scope, $http, $timeout, Upload) {
             $scope.mine = false;
             $scope.cancelSearch();
             $scope.currentlyVisiting = username;
-            
-            //Initialize tabs (Public & Private)
-            $timeout(function() {
-                $('ul.tabs').tabs();
-            }, 50);
         });
     };
     
@@ -81,15 +80,8 @@ function homeController($scope, $http, $timeout, Upload) {
             $scope.mine = true;
             $scope.cancelSearch();
             $scope.currentlyVisiting = null;
-            
-            //Initialize tabs (Public & Private)
-            $timeout(function() {
-                $('ul.tabs').tabs();
-            }, 50);
         });
     };
-    
-    $scope.visitSelf();
     
     $scope.showPublic = function() {
         $scope.filesCurrentlyShowing = jQuery.grep($scope.userFiles, function(file) {
@@ -138,9 +130,19 @@ function homeController($scope, $http, $timeout, Upload) {
             $scope.fileOrder = property;
     };
     
-    $scope.initNavbar = function() {
-        $(".button-collapse").sideNav();
-    };
+    //
+    //
+    //
+    
+    // INIT
+    var files = window.files;
+    files.forEach(function(file) {
+        file.formattedSize = formatSize(file.size);
+    });
+    $scope.userFiles = files;
+    $scope.showPublic();
+    $(".button-collapse").sideNav();
+    $('ul.tabs').tabs();
     
     //
     // 
