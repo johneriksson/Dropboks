@@ -26,7 +26,7 @@ function userController($scope, $http, $timeout) {
     //
     
     //Variables
-    $scope.userFiles = [];
+    $scope.filesCurrentlyShowing = [];
     $scope.fileOrder = "filename";
     
     //
@@ -36,7 +36,7 @@ function userController($scope, $http, $timeout) {
     //Scope functions
     $scope.searchUsers = function() {
         if($scope.searchString.length > 0) {
-            $http.get("/searchUsers/" + $scope.searchString).then(function(response) {
+            $http.get("/api/searchUsers/" + $scope.searchString).then(function(response) {
                 console.log(response);
                 $scope.searchResult = response.data;
             });    
@@ -75,7 +75,7 @@ function userController($scope, $http, $timeout) {
     files.forEach(function(file) {
         file.formattedSize = formatSize(file.size);
     });
-    $scope.userFiles = files;
+    $scope.filesCurrentlyShowing = files;
     $(".button-collapse").sideNav();
     $('ul.tabs').tabs();
 };

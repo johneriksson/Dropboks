@@ -1,0 +1,39 @@
+<div class="row">
+    <div class="col s12">
+        <table class="highlight">
+            <thead>
+                <tr>
+                    <th ng-click="sortFilesBy('filename');" ng-class="{'order': fileOrder == 'filename' || fileOrder == '-filename'}">
+                        Filename
+                        <span ng-show="fileOrder == 'filename'">▼</span>
+                        <span ng-show="fileOrder == '-filename'">▲</span>
+                    </th>
+                    <th ng-click="sortFilesBy('size')" ng-class="{'order': fileOrder == 'size' || fileOrder == '-size'}">
+                        Size
+                        <span ng-show="fileOrder == 'size'">▼</span>
+                        <span ng-show="fileOrder == '-size'">▲</span>
+                    </th>
+                    <th ng-click="sortFilesBy('timestamp')" ng-class="{'order': fileOrder == 'timestamp' || fileOrder == '-timestamp'}">
+                        Uploaded
+                        <span ng-show="fileOrder == 'timestamp'">▼</span>
+                        <span ng-show="fileOrder == '-timestamp'">▲</span>
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="fileInfo in filesCurrentlyShowing track by $index | orderBy: fileOrder">
+                    <td>{{fileInfo.filename}}</td>
+                    <td>{{fileInfo.formattedSize}}</td>
+                    <td>{{fileInfo.timestamp}}</td>
+                    <td>
+                        <button ng-click="download(fileInfo)" class="btn btn-action-small"><i class="material-icons left">file_download</i></button>
+                        <% if(owner) { %>
+                        <button ng-click="remove(fileInfo)" class="btn btn-action-small"><i class="material-icons left">delete</i></button>
+                        <% } %>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

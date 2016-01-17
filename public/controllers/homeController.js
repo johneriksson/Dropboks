@@ -28,12 +28,10 @@ function homeController($scope, $http, $timeout, Upload) {
     //Variables
     $scope.userFiles = [];
     $scope.filesCurrentlyShowing = [];
-    $scope.mine = true;
-    $scope.private = false;
     $scope.uploading = false;
     $scope.uploadPerc = 0;
-    $scope.currentlyVisiting = null;
     $scope.fileOrder = "filename";
+    $scope.private = false;
     
     //
     //
@@ -42,7 +40,7 @@ function homeController($scope, $http, $timeout, Upload) {
     //Scope functions
     $scope.searchUsers = function() {
         if($scope.searchString.length > 0) {
-            $http.get("/searchUsers/" + $scope.searchString).then(function(response) {
+            $http.get("/api/searchUsers/" + $scope.searchString).then(function(response) {
                 console.log(response);
                 $scope.searchResult = response.data;
             });    
@@ -53,34 +51,6 @@ function homeController($scope, $http, $timeout, Upload) {
     
     $scope.cancelSearch = function() {
         $scope.searchResult = null;
-    };
-    
-    $scope.visitUser = function(username) {
-        console.log("a");
-        $http.get("/public/" + username).then(function(response) {
-            console.log(response);
-            response.data.forEach(function(file) {
-                file.formattedSize = formatSize(file.size);
-            });
-            $scope.userFiles = response.data;
-            $scope.filesCurrentlyShowing = response.data;
-            $scope.mine = false;
-            $scope.cancelSearch();
-            $scope.currentlyVisiting = username;
-        });
-    };
-    
-    $scope.visitSelf = function() {
-        $http.get("/private").then(function(response) {
-            response.data.forEach(function(file) {
-                file.formattedSize = formatSize(file.size);
-            });
-            $scope.userFiles = response.data;
-            $scope.showPublic();
-            $scope.mine = true;
-            $scope.cancelSearch();
-            $scope.currentlyVisiting = null;
-        });
     };
     
     $scope.showPublic = function() {
@@ -102,14 +72,14 @@ function homeController($scope, $http, $timeout, Upload) {
     $scope.download = function(file) {
         var hiddenElement = document.createElement("a");
 
-        hiddenElement.href = "/file/" + file._id;
+        hiddenElement.href = "/api/file/" + file._id;
         hiddenElement.target = '_blank';
         hiddenElement.download = file.filename;
         hiddenElement.click();
     };
     
     $scope.remove = function(file) {
-        $http.post("/remove", { fileId: file._id }).then(function(response) {
+        $http.post("/api/remove", { fileId: file._id }).then(function(response) {
             console.log(response);
             if(response.status == 200) {
                 var index = $scope.userFiles.indexOf(file);
@@ -155,7 +125,7 @@ function homeController($scope, $http, $timeout, Upload) {
                 if (!file.$error) {
                     $scope.uploading = true;
                     Upload.upload({
-                        url: '/upload',
+                        url: '/api/upload',
                         data: {
                             file: file
                         },
@@ -167,7 +137,8 @@ function homeController($scope, $http, $timeout, Upload) {
                         $scope.uploadPerc = progressPercentage;
                     }).success(function (data, status, headers, config) {
                         $timeout(function() {
-                            $http.get("/private").then(function(response) {
+                            $http.get("/api/private").then(function(response) {
+                                console.log(response);
                                 $scope.userFiles = response.data;
                                 if($scope.private)
                                     $scope.showPrivate();

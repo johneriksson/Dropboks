@@ -33,11 +33,17 @@ app.set("view engine", "ejs");
 var configDB = require("./config/database");
 mongoose.connect(configDB.url);
 
-//Routes
+//Auth routes
 var auth = express.Router();
 require("./app/routes/auth")(auth, passport);
 app.use("/auth", auth);
 
+//Ajax routes
+var api = express.Router();
+require("./app/routes/api")(api, mongoose);
+app.use("/api", api);
+
+//Secure routes
 var secure = express.Router();
 require("./app/routes/secure")(secure, mongoose);
 app.use("/", secure);
