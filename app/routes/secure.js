@@ -12,6 +12,10 @@ var moment = require("moment");
 var File = require("../models/file");
 var User = require("../models/user");
 
+function stringifyObj(obj) {
+    return JSON.stringify(obj).replace(/\\/g, '\\\\').replace(/"/g, '\\\"');
+}
+
 module.exports = function(router, mongoose) {
     Grid.mongo = mongoose.mongo;
     
@@ -29,7 +33,19 @@ module.exports = function(router, mongoose) {
     
     //Serve home page
     router.get("/home", function(req, res) {
-        res.render("home.ejs", { user: req.user });
+        var userId = req.user._id;
+        
+        File.find({"owner": userId}, function(err, docs) {
+            if(err)
+                res.status(500).send();
+            else {
+                var data = {
+                    user: req.user,
+                    files: stringifyObj(docs)
+                }
+                res.render("home.ejs", data);
+            }
+        });
     });
     
     router.get("/logout", function(req, res) {

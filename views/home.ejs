@@ -14,6 +14,10 @@
         <link rel="stylesheet" href="/bower_components/Materialize/dist/css/materialize.min.css">
         <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
         <link rel="stylesheet" href="/css/custom.css">
+        
+        <script>
+            window.files = JSON.parse("<%- files %>");
+        </script>
     </head>
     <body ng-controller="HomeCtrl">
         <!-- Slide out menu -->
@@ -43,17 +47,97 @@
         
         
         <!-- Top navbar -->
-        <div ng-include="'/partials/navbar.html'"></div>
-        
+        <nav class="blue-grey">
+            <div class="nav-wrapper">
+                <ul class="left navbar-collapse">
+                    <a href="#" data-activates="slide-out" class="button-collapse" ng-init="initNavbar()"><i class="material-icons">menu</i></a>
+                </ul>
+                <a href="/" class="brand">Dropboks</a>
+                <div style="position: absolute; top: 0; right: 10px; width: 200px; z-index: 10;">
+                    <div class="row">
+                        <div class="col s12">
+                            <input type="text" ng-model="searchString" ng-change="searchUsers()" placeholder="Search users...">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col s12">
+                            <div class="username-in-search blue-grey" ng-repeat="username in searchResult" ng-click="visitUser(username)">
+                                {{username}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
         <!-- Main content -->
         <div id="main">
             <div class="searchResult">
                 <div ng-repeat="username in searchResult" ng-click="visitUser(username)" class="card-panel blue-grey lighten-3 username-in-search">{{username}}</div>
             </div>
             
-            <div ng-if="mine" ng-include="'/partials/mine.html'"></div>
-            <div ng-if="!mine" ng-include="'/partials/theirs.html'"></div>
+            <ul id="tabs" class="tabs blue-grey lighten-5">
+                <li class="tab col s6"><a href="#" ng-click="showPublic()">Public</a></li>
+                <li class="tab col s6"><a href="#" ng-click="showPrivate()">Private</a></li>
+            </ul>
+
+            <br>
+
+            <div class="row">
+                <div class="col s12">
+                    <div class="btn wideButton" ngf-select="upload($files)" ngf-multiple="true">Select files to upload</div>
+                    <div class="progress" ng-show="uploading">
+                        <div class="determinate" style="width: {{uploadPerc}}%"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col s12">
+                    <table class="highlight">
+                        <thead>
+                            <tr>
+                                <th ng-click="sortFilesBy('filename');" ng-class="{'order': fileOrder == 'filename' || fileOrder == '-filename'}">
+                                    Filename
+                                    <span ng-show="fileOrder == 'filename'">▼</span>
+                                    <span ng-show="fileOrder == '-filename'">▲</span>
+                                </th>
+                                <th ng-click="sortFilesBy('size')" ng-class="{'order': fileOrder == 'size' || fileOrder == '-size'}">
+                                    Size
+                                    <span ng-show="fileOrder == 'size'">▼</span>
+                                    <span ng-show="fileOrder == '-size'">▲</span>
+                                </th>
+                                <th ng-click="sortFilesBy('timestamp')" ng-class="{'order': fileOrder == 'timestamp' || fileOrder == '-timestamp'}">
+                                    Uploaded
+                                    <span ng-show="fileOrder == 'timestamp'">▼</span>
+                                    <span ng-show="fileOrder == '-timestamp'">▲</span>
+                                </th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="fileInfo in filesCurrentlyShowing | orderBy: fileOrder">
+                                <td>{{fileInfo.filename}}</td>
+                                <td>{{fileInfo.formattedSize}}</td>
+                                <td>{{fileInfo.timestamp}}</td>
+                                <td>
+                                    <button ng-click="download(fileInfo)" class="btn btn-action-small"><i class="material-icons left">file_download</i></button>
+                                    <button ng-click="remove(fileInfo)" class="btn btn-action-small" ng-if="mine"><i class="material-icons left">delete</i></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
+        
+<!--
+        <ul id="tabs" class="tabs blue-grey lighten-5">
+            <li class="tab col s6" ng><a href="#">{{currentlyVisiting}}</a></li>
+        </ul>
+
+        <div ng-include="'/partials/files.html'"></div>
+-->
         
         <script src="/bower_components/jquery/dist/jquery.min.js"></script>
         <script src="/bower_components/angular/angular.min.js"></script>

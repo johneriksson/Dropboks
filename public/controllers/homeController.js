@@ -4,11 +4,6 @@ var myApp = angular.module("myApp", ["ngFileUpload"]);
 myApp.controller("HomeCtrl", ["$scope", "$http", "$timeout", "Upload", homeController]);
 
 function homeController($scope, $http, $timeout, Upload) {
-    $(document).ready(function(){
-        // Initialize collapse button
-        
-    });
-    
     function round(number) {
         return Math.round(number * 10) / 10;
     }
@@ -27,16 +22,24 @@ function homeController($scope, $http, $timeout, Upload) {
     $scope.userFiles = [];
     $scope.filesCurrentlyShowing = [];
     $scope.mine = true;
-    $scope.isSearching = false;
     $scope.private = false;
     $scope.uploading = false;
     $scope.uploadPerc = 0;
     $scope.currentlyVisiting = null;
     $scope.fileOrder = "filename";
     
+    //Load files from ejs
+    var files = window.files;
+    files.forEach(function(file) {
+        file.formattedSize = formatSize(file.size);
+    });
+    $scope.userFiles = files;
+    $scope.showPublic();
+    
     $scope.searchUsers = function() {
         if($scope.searchString.length > 0) {
             $http.get("/searchUsers/" + $scope.searchString).then(function(response) {
+                console.log(response);
                 $scope.searchResult = response.data;
             });    
         } else {
@@ -46,11 +49,12 @@ function homeController($scope, $http, $timeout, Upload) {
     
     $scope.cancelSearch = function() {
         $scope.searchResult = null;
-        $scope.isSearching = false;
     };
     
     $scope.visitUser = function(username) {
+        console.log("a");
         $http.get("/public/" + username).then(function(response) {
+            console.log(response);
             response.data.forEach(function(file) {
                 file.formattedSize = formatSize(file.size);
             });
