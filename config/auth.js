@@ -8,6 +8,9 @@ module.exports = {
     "googleAuth": {
         "clientID": "650831759193-f3hgenvradg90ubq1f1smdmgsksujr9r.apps.googleusercontent.com",
         "clientSecret": "qYg1xzsiFKl6TaV4CPbpaZ_-",
-        "callbackURL": "http://localhost:60000/auth/google/callback"
+        "callbackURL": "https://dropboks.herokuapp.com/auth/google/callback"
+        //"callbackURL": "http://localhost:60000/auth/google/callback"
+
+
     }
 }
