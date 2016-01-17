@@ -66,6 +66,10 @@ function userController($scope, $http, $timeout) {
             $scope.fileOrder = property;
     };
     
+    $scope.visitUser = function(username) {
+        window.location = "/user/" + username;
+    };
+    
     //
     //
     //

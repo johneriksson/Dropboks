@@ -4,17 +4,16 @@
             <a href="#" data-activates="slide-out" class="button-collapse" ng-init="initNavbar()"><i class="material-icons">menu</i></a>
         </ul>
         <a href="/" class="brand">Dropboks</a>
-        <div style="position: absolute; top: 0; right: 10px; width: 200px; z-index: 10;">
+        <div class="searchDiv">
             <div class="row">
                 <div class="col s12">
                     <input type="text" ng-model="searchString" ng-change="searchUsers()" placeholder="Search users...">
                 </div>
             </div>
-            <div class="row">
-                <div class="col s12">
-                    <div class="username-in-search blue-grey" ng-repeat="username in searchResult" ng-click="visitUser(username)">
-                        {{username}}
-                    </div>
+            
+            <div class="searchResultDiv" ng-show="searchResult">
+                <div class="username-in-search blue-grey" ng-repeat="username in searchResult" ng-click="visitUser(username)">
+                    {{username}}
                 </div>
             </div>
         </div>

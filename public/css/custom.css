@@ -14,7 +14,6 @@ table th {
 table th:not(:last-child) {
     cursor: pointer;
     border-right: 1px solid #D0D0D0;
-/*    padding-left: 50px;*/
 }
 
 .wideButton {
@@ -47,8 +46,12 @@ table th:not(:last-child) {
 }
 
 .username-in-search {
-    padding-left: 5px;
+    padding-left: 10px;
     cursor: pointer;
+}
+
+.username-in-search:not(:last-child) {
+    border-bottom: 1px solid #BBBBBB;
 }
 
 .upload {
@@ -67,6 +70,20 @@ table th:not(:last-child) {
 
 .order {
     color: gray;
+}
+
+.searchDiv {
+    position: absolute;
+    top: -5px;
+    right: 10px;
+    width: 200px;
+    z-index: 10;
+    padding: 5px;
+}
+
+.searchResultDiv {
+    margin-top: -30px;
+    border: 1px solid black;
 }
 
 /* Smaller than 992 px */

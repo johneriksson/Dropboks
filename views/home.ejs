@@ -10,7 +10,6 @@
         </script>
         <title>Home - Dropboks</title>
         
-        <link rel="stylesheet" href="/bower_components/normalize-css/normalize.css">
         <link rel="stylesheet" href="/bower_components/Materialize/dist/css/materialize.min.css">
         <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
         <link rel="stylesheet" href="/css/custom.css">
@@ -28,10 +27,6 @@
 
         <!-- Main content -->
         <div id="main">
-            <div class="searchResult">
-                <div ng-repeat="username in searchResult" ng-click="visitUser(username)" class="card-panel blue-grey lighten-3 username-in-search">{{username}}</div>
-            </div>
-            
             <ul id="tabs" class="tabs blue-grey lighten-5">
                 <li class="tab col s6"><a href="#" ng-click="showPublic()">Public</a></li>
                 <li class="tab col s6"><a href="#" ng-click="showPrivate()">Private</a></li>

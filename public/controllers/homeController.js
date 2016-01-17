@@ -100,6 +100,10 @@ function homeController($scope, $http, $timeout, Upload) {
             $scope.fileOrder = property;
     };
     
+    $scope.visitUser = function(username) {
+        window.location = "/user/" + username;
+    };
+    
     //
     //
     //
