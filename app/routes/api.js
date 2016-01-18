@@ -23,7 +23,7 @@ module.exports = function(router, mongoose) {
             return next();
         }
 
-        res.redirect("/auth/login");
+        res.status(401).send();
     });
     
     //Get all user's files
